@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Completed Todos: {{ completedTodosCount }}</p>
+    <p class="completed-todos">Completed Todos: {{ completedTodosCount }}</p>
   </div>
 </template>
 <script>
@@ -22,4 +22,9 @@ export default {
   },
 }
 </script>
-<style></style>
+<style>
+.completed-todos {
+  font-weight: bold;
+  color: teal;
+}
+</style>

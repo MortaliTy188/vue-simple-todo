@@ -17,4 +17,18 @@ export default {
   emits: ['update:modelValue'],
 }
 </script>
-<style></style>
+<style>
+select {
+  padding: 12px 16px;
+  border: 1px solid teal;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+select:hover {
+  background-color: teal;
+  color: white;
+}
+</style>

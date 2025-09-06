@@ -1,16 +1,18 @@
 <template>
-  <div>
-    <my-input v-model="newTodo.title" placeholder="Add new todo" />
-    <my-button @click="addTodo">Add Todo</my-button>
-    <my-select v-if="todos.length > 0" name="filter" id="filter" v-model="filter"></my-select>
-    <my-button v-if="filteredTodos.some((todo) => todo.completed)" @click="clearCompleted">
-      Clear Completed
-    </my-button>
+  <div class="app">
+    <div class="input-container">
+      <my-input v-model="newTodo.title" @enter="addTodo" placeholder="Add new todo" />
+      <my-button @click="addTodo">Add Todo</my-button>
+      <my-select v-if="todos.length > 0" name="filter" id="filter" v-model="filter"></my-select>
+      <my-button v-if="filteredTodos.some((todo) => todo.completed)" @click="clearCompleted">
+        Clear Completed
+      </my-button>
+    </div>
+
+    <todos :filtered-todos="filteredTodos" :remove-todo="removeTodo" />
+
+    <todos-counter :todos="filteredTodos" />
   </div>
-
-  <todos :filtered-todos="filteredTodos" :remove-todo="removeTodo" />
-
-  <todos-counter :todos="filteredTodos" />
 </template>
 <script>
 import { computed } from 'vue'
@@ -63,4 +65,32 @@ export default {
   },
 }
 </script>
-<style></style>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.app {
+  background-color: #eee;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  gap: 50px;
+  margin-bottom: 40px;
+}
+
+.todos {
+  margin-bottom: 40px;
+}
+</style>
