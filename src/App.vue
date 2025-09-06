@@ -1,52 +1,46 @@
 <template>
   <div>
-    <input type="text" v-model="newTodo.title" placeholder="Add new todo" />
-    <button @click="addTodo">Add Todo</button>
-    <select name="filter" id="filter" v-model="filter">
-      <option value="all">All</option>
-      <option value="completed">Completed</option>
-      <option value="in-progress">In progress</option>
-    </select>
-    <button v-if="filteredTodos.some((todo) => todo.completed)" @click="clearCompleted">
+    <my-input v-model="newTodo.title" placeholder="Add new todo" />
+    <my-button @click="addTodo">Add Todo</my-button>
+    <my-select v-if="todos.length > 0" name="filter" id="filter" v-model="filter"></my-select>
+    <my-button v-if="filteredTodos.some((todo) => todo.completed)" @click="clearCompleted">
       Clear Completed
-    </button>
+    </my-button>
   </div>
 
-  <div class="todos" v-for="todo in filteredTodos" :key="todo.id">
-    <span :class="{ completed: todo.completed }">{{ todo.title }}</span>
-    <input type="checkbox" v-model="todo.completed" />
-    <button @click="removeTodo(todo)">Remove</button>
-  </div>
+  <todos :filtered-todos="filteredTodos" :remove-todo="removeTodo" />
 
-  <div>
-    <p>Completed Todos: {{ completedTodosCounter }}</p>
-  </div>
+  <todos-counter :todos="filteredTodos" />
 </template>
 <script>
 import { computed } from 'vue'
-
+import Todos from './components/Todos.vue'
+import TodosCounter from './components/TodosCounter.vue'
+import MySelect from './components/UI/MySelect.vue'
 export default {
+  components: {
+    Todos,
+    TodosCounter,
+  },
   data() {
     return {
-      todos: [
-        { id: 1, title: 'Task 1', completed: false },
-        { id: 2, title: 'Task 2', completed: false },
-        { id: 3, title: 'Task 3', completed: false },
-      ],
+      todos: [],
       filter: 'all',
-      completedTodosCounter: computed(() => {
-        return this.todos.filter((todo) => todo.completed).length
-      }),
       newTodo: { id: 0, title: '', completed: false },
-      filteredTodos: computed(() => {
-        if (this.filter === 'completed') {
-          return this.todos.filter((todo) => todo.completed)
-        } else if (this.filter === 'in-progress') {
-          return this.todos.filter((todo) => !todo.completed)
-        }
-        return this.todos
-      }),
     }
+  },
+  computed: {
+    filteredTodos() {
+      if (this.filter === 'completed') {
+        return this.todos.filter((todo) => todo.completed)
+      } else if (this.filter === 'in-progress') {
+        return this.todos.filter((todo) => !todo.completed)
+      }
+      return this.todos
+    },
+    completedTodosCounter: computed(() => {
+      return this.todos.filter((todo) => todo.completed).length
+    }),
   },
   methods: {
     addTodo() {
@@ -69,8 +63,4 @@ export default {
   },
 }
 </script>
-<style>
-.completed {
-  text-decoration: line-through;
-}
-</style>
+<style></style>
